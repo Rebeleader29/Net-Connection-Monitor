@@ -40,14 +40,12 @@ do
         echo $TimeStamp
         echo $Stats
         echo "" >> ncm.log
-        echo "" >> ncm.log
         echo $TimeStamp >> ncm.log
         echo $Stats >> ncm.log
     else
         TimeStamp=$(date '+%m/%d/%Y %H:%M:%S');
         echo $TimeStamp
         echo NETWORK CONNECTION ERROR
-        echo "" >> ncm.log
         echo "" >> ncm.log
         echo $TimeStamp >> ncm.log
         echo NETWORK CONNECTION ERROR >> ncm.log
@@ -58,7 +56,6 @@ do
             TimeStamp=$(date '+%m/%d/%Y %H:%M:%S');
             echo $TimeStamp
             echo NETWORK CONNECTION ERROR
-            echo "" >> ncm.log
             echo "" >> ncm.log
             echo $TimeStamp >> ncm.log
             echo NETWORK CONNECTION ERROR >> ncm.log
