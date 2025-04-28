@@ -11,24 +11,35 @@ if test -f "ncm.conf"; then
 else
   echo Using Default Configuration
   touch ncm.conf
-  echo "IP=1.1.1.1" > ncm.conf
+  echo "IP=1.1.1.1
+  Delay=300" > ncm.conf
   sleep 1
 fi
 
 echo Seting Variables
 sleep 1
 
-#Sets Variables
-Error=0
+#Sets variables and displays them
 . ncm.conf
+DelayMinute=$((Delay / 60))
 echo $IP
+echo Delay $DelayMinute "Minute(s)"
 sleep 3
 
-#Sets for break on error, otherwise continuous loop
-while [ $Error == 0 ]
+#Continuous loop
+while [ 0 == 0 ]
 do
     clear
-    Ping=$(ping -c 1 $IP)
+    Ping=$(ping -c 1 -q $IP)
     echo $Ping
-    sleep 10
+    ping -c 1 -q $IP > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        Stats=$(speedtest-cli --simple)
+        echo $Stats
+        echo $Stats > ncm.log
+    else
+        echo NETWORK CONNECTION ERROR
+        echo NETWORK CONNECTION ERROR > ncm.log
+    fi
+    sleep $Delay
 done
