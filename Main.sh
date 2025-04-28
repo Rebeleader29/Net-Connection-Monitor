@@ -12,7 +12,8 @@ else
   echo Using Default Configuration
   touch ncm.conf
   echo "IP=1.1.1.1
-  Delay=300" > ncm.conf
+Delay=300
+ErrorDelay=5" > ncm.conf
   sleep 1
 fi
 
@@ -35,11 +36,35 @@ do
     ping -c 1 -q $IP > /dev/null 2>&1
     if [ $? -eq 0 ]; then
         Stats=$(speedtest-cli --simple)
+        TimeStamp=$(date '+%m/%d/%Y %H:%M:%S');
+        echo $TimeStamp
         echo $Stats
-        echo $Stats > ncm.log
+        echo "" >> ncm.log
+        echo "" >> ncm.log
+        echo $TimeStamp >> ncm.log
+        echo $Stats >> ncm.log
     else
+        TimeStamp=$(date '+%m/%d/%Y %H:%M:%S');
+        echo $TimeStamp
         echo NETWORK CONNECTION ERROR
-        echo NETWORK CONNECTION ERROR > ncm.log
+        echo "" >> ncm.log
+        echo "" >> ncm.log
+        echo $TimeStamp >> ncm.log
+        echo NETWORK CONNECTION ERROR >> ncm.log
+        ping -c 1 -q $IP > /dev/null 2>&1
+        
+        while [ $? -eq 0 ]
+        do
+            TimeStamp=$(date '+%m/%d/%Y %H:%M:%S');
+            echo $TimeStamp
+            echo NETWORK CONNECTION ERROR
+            echo "" >> ncm.log
+            echo "" >> ncm.log
+            echo $TimeStamp >> ncm.log
+            echo NETWORK CONNECTION ERROR >> ncm.log
+            sleep $ErrorDelay
+            ping -c 1 -q $IP > /dev/null 2>&1
+        done
     fi
     sleep $Delay
 done
